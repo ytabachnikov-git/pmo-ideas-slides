@@ -32,35 +32,34 @@
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    background: var(--bg-page);
+    background: #0f172a;
     color: var(--text);
     overflow: hidden;
     height: 100vh;
     width: 100vw;
+    display: flex; align-items: center; justify-content: center;
   }
 
-  .slides-wrapper { position: relative; width: 100vw; height: 100vh; }
+  .slides-wrapper {
+    position: relative;
+    width: 1920px; height: 1080px;
+    transform-origin: center center;
+    transform: scale(var(--slide-scale, 1));
+  }
 
   .slide {
     position: absolute; inset: 0;
     display: flex; flex-direction: column;
-    padding: clamp(24px, 3vh, 40px) clamp(40px, 5vw, 80px) clamp(40px, 5vh, 64px);
-    opacity: 0; transform: translateX(60px);
+    justify-content: center;
+    padding: 48px 80px 64px;
+    opacity: 0;
     pointer-events: none;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
+    transition: opacity 0.5s ease;
     background: var(--bg-page);
   }
 
-  /* Vertically center slide content, collapse spacers if content overflows */
-  .slide::before, .slide::after {
-    content: ''; flex: 1 1 0px; min-height: 0;
-  }
-
-  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
-  .slide.exit-left { opacity: 0; transform: translateX(-60px); }
+  .slide.active { opacity: 1; pointer-events: auto; }
+  .slide.exit-left { opacity: 0; }
 
   .progress-bar {
     position: fixed; top: 0; left: 0; height: 3px;
@@ -175,8 +174,8 @@
   .section-label {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 7px 18px; border-radius: 8px;
-    font-size: clamp(11px, 1vw, 15px); font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1.5px; margin-bottom: clamp(6px, 1vh, 12px);
+    font-size: 15px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; margin-bottom: 12px;
   }
 
   .section-label.funnel { background: var(--primary-bg); color: var(--primary); }
@@ -249,51 +248,51 @@
 
   /* ── Detail Cards ── */
   .detail-layout {
-    display: flex; flex-direction: column; gap: clamp(14px, 2vh, 24px);
+    display: flex; flex-direction: column; gap: 24px;
     width: 100%;
   }
 
   .detail-row {
-    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 2vw, 24px);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
   }
 
   .detail-section {
     background: var(--bg); border: 1px solid var(--border);
-    border-radius: 16px; padding: clamp(18px, 2.5vh, 32px) clamp(22px, 2.5vw, 36px);
+    border-radius: 16px; padding: 32px 36px;
     box-shadow: var(--shadow);
   }
 
   .detail-section h3 {
-    font-size: clamp(11px, 0.9vw, 14px); text-transform: uppercase; letter-spacing: 1.5px;
-    color: var(--text-muted); margin-bottom: clamp(8px, 1.2vh, 16px); font-weight: 700;
+    font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--text-muted); margin-bottom: 16px; font-weight: 700;
     display: flex; align-items: center; gap: 8px;
   }
 
-  .detail-section p { font-size: clamp(15px, 1.5vw, 22px); line-height: 1.65; color: var(--text-secondary); }
+  .detail-section p { font-size: 24px; line-height: 1.6; color: var(--text-secondary); }
 
   .detail-section ul, .detail-section ol {
-    margin: 0; padding-left: 26px; font-size: clamp(15px, 1.5vw, 22px); line-height: 1.85; color: var(--text-secondary);
+    margin: 0; padding-left: 28px; font-size: 24px; line-height: 1.8; color: var(--text-secondary);
   }
 
-  .detail-section ul li, .detail-section ol li { margin-bottom: clamp(2px, 0.5vh, 6px); }
+  .detail-section ul li, .detail-section ol li { margin-bottom: 6px; }
   .detail-section ul { list-style: disc; }
   .detail-section ol { list-style: decimal; }
   .detail-section li strong { color: var(--text); }
 
-  .detail-title { font-size: clamp(28px, 3.2vw, 46px); font-weight: 700; margin-bottom: clamp(6px, 1vh, 12px); color: var(--text); }
+  .detail-title { font-size: 48px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
 
-  .detail-meta { display: flex; gap: clamp(16px, 2vw, 32px); margin-bottom: clamp(12px, 2vh, 24px); flex-wrap: wrap; }
+  .detail-meta { display: flex; gap: 32px; margin-bottom: 24px; flex-wrap: wrap; }
 
   .meta-item {
     display: flex; align-items: center; gap: 8px;
-    font-size: clamp(13px, 1.2vw, 19px); color: var(--text-muted);
+    font-size: 20px; color: var(--text-muted);
   }
 
   .meta-item strong { color: var(--text); font-weight: 600; }
 
   .effort-badge {
     display: inline-flex; align-items: center;
-    padding: 5px 16px; border-radius: 8px; font-size: clamp(13px, 1.2vw, 19px); font-weight: 600;
+    padding: 6px 18px; border-radius: 8px; font-size: 20px; font-weight: 600;
   }
 
   .effort-badge.high { background: var(--danger-bg); color: var(--danger); }
@@ -343,13 +342,7 @@
     font-size: 10px; font-weight: 500; box-shadow: var(--shadow);
   }
 
-  /* ── Responsive ── */
-  @media (max-width: 768px) {
-    .slide { padding: 24px; }
-    .title-main { font-size: 36px; }
-    .funnel-stage { width: 90% !important; }
-    .detail-row { grid-template-columns: 1fr; }
-  }
+  /* Responsive handled by JS scale — no media queries needed */
 </style>
 </head>
 <body>
@@ -656,6 +649,14 @@
 </div>
 
 <script>
+// ── Scale slides to fit any window ──
+function updateScale() {
+  const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  document.getElementById('slidesWrapper').style.setProperty('--slide-scale', s);
+}
+updateScale();
+window.addEventListener('resize', updateScale);
+
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
 const totalSlides = slides.length;
