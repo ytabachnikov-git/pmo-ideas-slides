@@ -3,26 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PMO Ideas Register - Interactive Presentation</title>
+<title>Milano Cortina 2026 - Winter Olympics Recap</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
   :root {
-    --primary: #4f46e5;
-    --primary-light: #818cf8;
-    --primary-bg: #eef2ff;
-    --accent: #f59e0b;
-    --accent-bg: #fffbeb;
-    --success: #059669;
-    --success-bg: #ecfdf5;
-    --danger: #dc2626;
-    --danger-bg: #fef2f2;
-    --bg: #ffffff;
-    --bg-page: #f8fafc;
-    --bg-card: #ffffff;
+    --ice: #e0f2fe;
+    --ice-deep: #bae6fd;
+    --snow: #f0f9ff;
+    --sky: #0284c7;
+    --sky-light: #38bdf8;
+    --sky-dark: #0c4a6e;
+    --gold: #f59e0b;
+    --gold-light: #fbbf24;
+    --silver: #94a3b8;
+    --bronze: #d97706;
+    --italia-green: #009246;
+    --italia-red: #ce2b37;
     --text: #0f172a;
     --text-secondary: #475569;
     --text-muted: #94a3b8;
+    --bg: #ffffff;
+    --bg-page: #f8fafc;
     --border: #e2e8f0;
     --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
     --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
@@ -32,11 +34,10 @@
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    background: #0f172a;
+    background: #0c4a6e;
     color: var(--text);
     overflow: hidden;
-    height: 100vh;
-    width: 100vw;
+    height: 100vh; width: 100vw;
     display: flex; align-items: center; justify-content: center;
   }
 
@@ -52,41 +53,49 @@
     display: flex; flex-direction: column;
     justify-content: center;
     padding: 48px 80px 64px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.6s ease;
     background: var(--bg-page);
   }
 
   .slide.active { opacity: 1; pointer-events: auto; }
-  .slide.exit-left { opacity: 0; }
 
   .progress-bar {
-    position: fixed; top: 0; left: 0; height: 3px;
-    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    position: fixed; top: 0; left: 0; height: 4px;
+    background: linear-gradient(90deg, var(--sky), var(--sky-light), var(--gold));
     transition: width 0.5s ease; z-index: 100;
   }
 
-  /* ── Nav ── */
+  /* Snow particle canvas */
+  #snowCanvas {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 99;
+  }
+
+  /* Nav */
   .nav-controls {
     position: fixed; bottom: 28px; right: 48px;
     display: flex; align-items: center; gap: 12px; z-index: 50;
   }
 
   .nav-btn {
-    width: 42px; height: 42px; border-radius: 12px;
-    border: 1px solid var(--border); background: var(--bg);
-    color: var(--text); cursor: pointer;
+    width: 44px; height: 44px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.9);
+    color: var(--sky-dark); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     font-size: 16px; transition: all 0.2s;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow); backdrop-filter: blur(8px);
   }
 
-  .nav-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .nav-btn:hover { background: var(--sky); color: white; border-color: var(--sky); }
   .nav-btn:disabled { opacity: 0.3; cursor: default; }
-  .nav-btn:disabled:hover { background: var(--bg); color: var(--text); border-color: var(--border); }
+  .nav-btn:disabled:hover { background: rgba(255,255,255,0.9); color: var(--sky-dark); }
 
-  .slide-counter { font-size: 13px; color: var(--text-muted); font-weight: 500; min-width: 50px; text-align: center; }
+  .slide-counter {
+    font-size: 13px; color: var(--text-muted); font-weight: 600;
+    min-width: 50px; text-align: center;
+    background: rgba(255,255,255,0.8); padding: 4px 12px; border-radius: 8px;
+  }
 
   .slide-dots {
     position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
@@ -95,13 +104,13 @@
 
   .dot {
     width: 8px; height: 8px; border-radius: 50%;
-    background: var(--border); cursor: pointer; transition: all 0.3s;
+    background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s;
   }
 
-  .dot.active { background: var(--primary); width: 24px; border-radius: 4px; }
-  .dot:hover { background: var(--primary-light); }
+  .dot.active { background: var(--gold); width: 24px; border-radius: 4px; }
+  .dot:hover { background: var(--sky-light); }
 
-  /* ── Sidebar ── */
+  /* Sidebar */
   .sidebar-toggle {
     position: fixed; top: 20px; left: 20px; z-index: 200;
     width: 40px; height: 40px; border-radius: 10px;
@@ -111,7 +120,7 @@
     font-size: 18px; transition: all 0.2s; box-shadow: var(--shadow);
   }
 
-  .sidebar-toggle:hover { background: var(--primary); color: white; }
+  .sidebar-toggle:hover { background: var(--sky); color: white; }
 
   .sidebar {
     position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
@@ -122,7 +131,10 @@
   }
 
   .sidebar.open { left: 0; }
-  .sidebar h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 16px; font-weight: 600; }
+  .sidebar h3 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--text-muted); margin-bottom: 16px; font-weight: 600;
+  }
 
   .toc-item {
     padding: 10px 14px; border-radius: 8px; cursor: pointer;
@@ -130,223 +142,525 @@
     margin-bottom: 2px; display: flex; align-items: center; gap: 10px;
   }
 
-  .toc-item:hover { background: var(--bg-page); color: var(--text); }
-  .toc-item.active { background: var(--primary); color: white; }
+  .toc-item:hover { background: var(--snow); color: var(--text); }
+  .toc-item.active { background: var(--sky); color: white; }
   .toc-num { font-weight: 600; font-size: 11px; opacity: 0.5; min-width: 20px; }
 
-  /* ── Title Slide ── */
+  /* Title Slide */
   .title-slide {
     justify-content: center; align-items: center; text-align: center;
-    background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 50%, #fff7ed 100%);
+    background: linear-gradient(135deg, #0c4a6e 0%, #075985 30%, #0369a1 60%, #0284c7 100%);
+    color: white; position: relative; overflow: hidden;
   }
+
+  .title-slide::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(56,189,248,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(245,158,11,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 70%);
+  }
+
+  .title-rings {
+    position: relative; z-index: 1;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+
+  .olympic-rings { display: flex; justify-content: center; gap: 0; margin-bottom: 8px; }
+  .ring {
+    width: 52px; height: 52px; border-radius: 50%;
+    border: 5px solid; position: relative;
+  }
+  .ring:nth-child(1) { border-color: #0085C7; }
+  .ring:nth-child(2) { border-color: #000000; margin-left: -8px; margin-top: 20px; }
+  .ring:nth-child(3) { border-color: #DF0024; margin-left: -8px; }
+  .ring:nth-child(4) { border-color: #F4C300; margin-left: -8px; margin-top: 20px; }
+  .ring:nth-child(5) { border-color: #009F3D; margin-left: -8px; }
 
   .title-badge {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 8px 20px; border-radius: 99px;
-    background: var(--primary-bg); border: 1px solid rgba(79,70,229,0.2);
-    font-size: 13px; font-weight: 600; color: var(--primary);
+    padding: 10px 24px; border-radius: 99px;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    font-size: 14px; font-weight: 600; color: var(--gold-light);
     margin-bottom: 28px; animation: fadeUp 0.8s ease 0.2s both;
+    letter-spacing: 2px; text-transform: uppercase;
+    backdrop-filter: blur(8px);
   }
 
   .title-main {
-    font-size: 56px; font-weight: 800; line-height: 1.1; margin-bottom: 20px;
-    color: var(--text);
+    font-size: 72px; font-weight: 900; line-height: 1.05; margin-bottom: 16px;
     animation: fadeUp 0.8s ease 0.4s both;
+    background: linear-gradient(135deg, #ffffff, #bae6fd);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .title-sub {
-    font-size: 20px; color: var(--text-secondary); font-weight: 400;
-    max-width: 600px; line-height: 1.6;
+    font-size: 22px; color: rgba(255,255,255,0.7); font-weight: 400;
+    max-width: 700px; line-height: 1.6;
     animation: fadeUp 0.8s ease 0.6s both;
   }
 
   .title-date {
-    margin-top: 40px; font-size: 14px; color: var(--text-muted);
+    margin-top: 40px; font-size: 15px; color: rgba(255,255,255,0.4);
     animation: fadeUp 0.8s ease 0.8s both;
+    letter-spacing: 1px;
   }
+
+  .title-italia {
+    display: flex; gap: 0; margin-top: 24px;
+    animation: fadeUp 0.8s ease 1s both;
+  }
+  .title-italia span {
+    width: 40px; height: 6px;
+  }
+  .title-italia span:nth-child(1) { background: #009246; border-radius: 3px 0 0 3px; }
+  .title-italia span:nth-child(2) { background: #ffffff; }
+  .title-italia span:nth-child(3) { background: #ce2b37; border-radius: 0 3px 3px 0; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── Section Labels ── */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Section Labels */
   .section-label {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 7px 18px; border-radius: 8px;
-    font-size: 15px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1.5px; margin-bottom: 12px;
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 2px; margin-bottom: 12px;
   }
 
-  .section-label.funnel { background: var(--primary-bg); color: var(--primary); }
-  .section-label.selected { background: var(--success-bg); color: var(--success); }
-  .section-label.roadmap { background: var(--accent-bg); color: #b45309; }
+  .section-label.overview { background: var(--snow); color: var(--sky); }
+  .section-label.ceremony { background: #faf5ff; color: #7c3aed; }
+  .section-label.medals { background: #fffbeb; color: #b45309; }
+  .section-label.athletes { background: #ecfdf5; color: #059669; }
+  .section-label.moments { background: #fef2f2; color: #dc2626; }
+  .section-label.sports { background: #f0fdf4; color: #16a34a; }
+  .section-label.venues { background: #eff6ff; color: #2563eb; }
 
-  .slide-title { font-size: 36px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
-  .slide-subtitle { font-size: 16px; color: var(--text-secondary); margin-bottom: 36px; line-height: 1.5; }
-
-  /* ── Funnel ── */
-  .funnel-container {
-    display: flex; flex-direction: column; align-items: center;
-    gap: 0; flex: 1; justify-content: center; padding: 20px 0;
+  .slide-title {
+    font-size: 42px; font-weight: 800; margin-bottom: 8px; color: var(--text);
+    line-height: 1.15;
+  }
+  .slide-subtitle {
+    font-size: 17px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.5;
   }
 
-  .funnel-stage {
-    display: flex; align-items: center; justify-content: center;
-    padding: 28px; border-radius: 16px; cursor: pointer;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative; opacity: 0; transform: scale(0.9);
+  /* Stats Grid */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    margin-bottom: 28px;
   }
 
-  .funnel-stage.visible { opacity: 1; transform: scale(1); }
-
-  .funnel-stage .funnel-count {
-    font-size: 52px; font-weight: 800; line-height: 1; margin-right: 24px;
-  }
-
-  .funnel-stage .funnel-info h3 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-  .funnel-stage .funnel-info p { font-size: 14px; opacity: 0.7; }
-
-  .funnel-stage.stage-all {
-    width: 90%; background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-    color: #334155;
-  }
-
-  .funnel-stage.stage-selected {
-    width: 65%; background: linear-gradient(135deg, var(--primary-bg), #c7d2fe);
-    color: var(--primary);
-  }
-
-  .funnel-stage.stage-presented {
-    width: 45%; background: linear-gradient(135deg, var(--success-bg), #a7f3d0);
-    color: var(--success);
-  }
-
-  .funnel-arrow {
-    font-size: 24px; color: var(--text-muted); margin: 8px 0;
-    opacity: 0; transition: opacity 0.5s ease;
-  }
-
-  .funnel-arrow.visible { opacity: 1; }
-
-  .funnel-stage:hover { transform: scale(1.02); box-shadow: var(--shadow-lg); }
-
-  .funnel-sidebar {
-    position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-    width: 280px; padding: 20px; background: var(--bg);
-    border-radius: 16px; border: 1px solid var(--border);
-    box-shadow: var(--shadow-lg); font-size: 13px;
-    opacity: 0; pointer-events: none; transition: all 0.3s ease;
-    z-index: 10;
-  }
-
-  .funnel-sidebar.show { opacity: 1; pointer-events: auto; }
-  .funnel-sidebar h4 { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
-  .funnel-sidebar ul { list-style: none; padding: 0; }
-  .funnel-sidebar li { padding: 6px 0; border-bottom: 1px solid var(--border); color: var(--text-secondary); font-size: 12px; }
-  .funnel-sidebar li:last-child { border-bottom: none; }
-
-  /* ── Detail Cards ── */
-  .detail-layout {
-    display: flex; flex-direction: column; gap: 24px;
-    width: 100%;
-  }
-
-  .detail-row {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
-  }
-
-  .detail-section {
+  .stat-card {
     background: var(--bg); border: 1px solid var(--border);
-    border-radius: 16px; padding: 32px 36px;
-    box-shadow: var(--shadow);
+    border-radius: 16px; padding: 28px; text-align: center;
+    box-shadow: var(--shadow); transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
   }
 
-  .detail-section h3 {
-    font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px;
-    color: var(--text-muted); margin-bottom: 16px; font-weight: 700;
+  .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+  .stat-icon { font-size: 36px; margin-bottom: 12px; }
+  .stat-number {
+    font-size: 42px; font-weight: 800; color: var(--sky);
+    line-height: 1; margin-bottom: 6px;
+  }
+  .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+
+  .highlight-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+
+  .highlight-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 24px; box-shadow: var(--shadow);
+    transition: transform 0.3s;
+  }
+  .highlight-card:hover { transform: translateY(-2px); }
+  .highlight-card h4 {
+    font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px;
     display: flex; align-items: center; gap: 8px;
   }
+  .highlight-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
 
-  .detail-section p { font-size: 24px; line-height: 1.6; color: var(--text-secondary); }
-
-  .detail-section ul, .detail-section ol {
-    margin: 0; padding-left: 28px; font-size: 24px; line-height: 1.8; color: var(--text-secondary);
+  /* Ceremony slide */
+  .ceremony-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    flex: 1;
   }
 
-  .detail-section ul li, .detail-section ol li { margin-bottom: 6px; }
-  .detail-section ul { list-style: disc; }
-  .detail-section ol { list-style: decimal; }
-  .detail-section li strong { color: var(--text); }
+  .ceremony-left {
+    display: flex; flex-direction: column; gap: 20px; justify-content: center;
+  }
 
-  .detail-title { font-size: 48px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
+  .ceremony-detail {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 24px 28px; box-shadow: var(--shadow);
+  }
 
-  .detail-meta { display: flex; gap: 32px; margin-bottom: 24px; flex-wrap: wrap; }
+  .ceremony-detail h4 {
+    font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--text-muted); margin-bottom: 10px; font-weight: 700;
+  }
+  .ceremony-detail p { font-size: 16px; color: var(--text-secondary); line-height: 1.6; }
+  .ceremony-detail strong { color: var(--text); }
 
-  .meta-item {
+  .ceremony-right {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #0c4a6e, #075985);
+    border-radius: 24px; padding: 48px; position: relative; overflow: hidden;
+  }
+
+  .ceremony-right::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 60%, rgba(245,158,11,0.15) 0%, transparent 60%);
+  }
+
+  .cauldron-icon {
+    font-size: 96px; margin-bottom: 20px; position: relative; z-index: 1;
+    animation: flicker 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes flicker {
+    0% { filter: brightness(1) drop-shadow(0 0 20px rgba(245,158,11,0.5)); }
+    100% { filter: brightness(1.2) drop-shadow(0 0 40px rgba(245,158,11,0.8)); }
+  }
+
+  .ceremony-caption {
+    color: rgba(255,255,255,0.8); font-size: 16px; text-align: center;
+    line-height: 1.6; position: relative; z-index: 1;
+  }
+  .ceremony-caption strong { color: var(--gold-light); }
+
+  /* Medal Table */
+  .medal-table-container {
+    flex: 1; display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+
+  .medal-table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    font-size: 16px;
+  }
+
+  .medal-table thead th {
+    padding: 14px 16px; text-align: left;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--text-muted); font-weight: 700;
+    border-bottom: 2px solid var(--border);
+    position: sticky; top: 0; background: var(--bg-page);
+  }
+
+  .medal-table thead th:nth-child(n+3) { text-align: center; }
+
+  .medal-table tbody tr {
+    cursor: pointer; transition: all 0.2s;
+  }
+
+  .medal-table tbody tr:hover { background: var(--snow); }
+  .medal-table tbody tr.highlight { background: rgba(2,132,199,0.08); }
+
+  .medal-table tbody td {
+    padding: 14px 16px; border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .medal-table tbody td:nth-child(n+3) { text-align: center; font-weight: 600; }
+
+  .rank-cell {
+    font-weight: 800; color: var(--text-muted); font-size: 14px; width: 40px;
+  }
+
+  .country-cell {
+    display: flex; align-items: center; gap: 12px; font-weight: 600;
+  }
+
+  .country-flag { font-size: 24px; }
+
+  .medal-gold { color: #ca8a04; }
+  .medal-silver { color: #64748b; }
+  .medal-bronze { color: #b45309; }
+  .medal-total { font-weight: 800; color: var(--text); font-size: 18px; }
+
+  .medal-dot {
+    display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    margin-right: 6px;
+  }
+  .medal-dot.g { background: #fbbf24; }
+  .medal-dot.s { background: #94a3b8; }
+  .medal-dot.b { background: #d97706; }
+
+  /* Athletes Grid */
+  .athletes-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    flex: 1; align-content: center;
+  }
+
+  .athlete-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 20px; padding: 32px;
+    box-shadow: var(--shadow); transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+
+  .athlete-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+  .athlete-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  }
+
+  .athlete-card:nth-child(1)::before { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+  .athlete-card:nth-child(2)::before { background: linear-gradient(90deg, #38bdf8, #0284c7); }
+  .athlete-card:nth-child(3)::before { background: linear-gradient(90deg, #4ade80, #16a34a); }
+  .athlete-card:nth-child(4)::before { background: linear-gradient(90deg, #f87171, #dc2626); }
+  .athlete-card:nth-child(5)::before { background: linear-gradient(90deg, #c084fc, #9333ea); }
+  .athlete-card:nth-child(6)::before { background: linear-gradient(90deg, #fb923c, #ea580c); }
+
+  .athlete-emoji { font-size: 48px; margin-bottom: 16px; }
+  .athlete-country { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; }
+  .athlete-name { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+  .athlete-sport { font-size: 13px; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .athlete-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+  .athlete-medals { display: flex; gap: 6px; margin-top: 12px; }
+  .athlete-medal-badge {
+    padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 700;
+  }
+  .badge-gold { background: #fef3c7; color: #92400e; }
+  .badge-silver { background: #f1f5f9; color: #475569; }
+  .badge-bronze { background: #fed7aa; color: #9a3412; }
+
+  /* Moments */
+  .moments-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+    flex: 1; align-content: center;
+  }
+
+  .moment-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 20px; padding: 32px;
+    box-shadow: var(--shadow); transition: all 0.3s;
+    display: flex; gap: 20px; align-items: flex-start;
+  }
+
+  .moment-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+  .moment-icon {
+    font-size: 40px; flex-shrink: 0;
+    width: 64px; height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--snow); border-radius: 16px;
+  }
+
+  .moment-content h4 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .moment-content p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+  .moment-tag {
+    display: inline-block; margin-top: 10px;
+    padding: 3px 10px; border-radius: 6px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  /* New Sports */
+  .new-sport-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    flex: 1; align-items: center;
+  }
+
+  .sport-info { display: flex; flex-direction: column; gap: 20px; }
+
+  .sport-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 24px; box-shadow: var(--shadow);
+  }
+
+  .sport-card h4 {
+    font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px;
     display: flex; align-items: center; gap: 8px;
-    font-size: 20px; color: var(--text-muted);
+  }
+  .sport-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+
+  .sport-visual {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    border-radius: 24px; padding: 48px; height: 100%;
   }
 
-  .meta-item strong { color: var(--text); font-weight: 600; }
+  .mountain-icon { font-size: 120px; margin-bottom: 20px; }
 
-  .effort-badge {
-    display: inline-flex; align-items: center;
-    padding: 6px 18px; border-radius: 8px; font-size: 20px; font-weight: 600;
+  .sport-results {
+    width: 100%; max-width: 360px;
   }
 
-  .effort-badge.high { background: var(--danger-bg); color: var(--danger); }
-  .effort-badge.medium { background: var(--accent-bg); color: #b45309; }
-
-  /* ── Timeline ── */
-  .timeline { position: relative; padding-left: 32px; }
-
-  .timeline::before {
-    content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
-    width: 2px; background: var(--border);
+  .result-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; background: rgba(255,255,255,0.8);
+    border-radius: 10px; margin-bottom: 8px;
+    font-size: 14px; font-weight: 500;
   }
 
-  .timeline-item { position: relative; margin-bottom: 28px; }
+  .result-medal { font-size: 20px; }
+  .result-name { flex: 1; font-weight: 600; color: var(--text); }
+  .result-country { color: var(--text-muted); font-size: 12px; }
 
-  .timeline-item::before {
-    content: ''; position: absolute; left: -28px; top: 6px;
-    width: 12px; height: 12px; border-radius: 50%;
-    border: 2px solid var(--primary); background: var(--bg-page);
+  /* Venues */
+  .venues-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    flex: 1; align-content: center;
   }
 
-  .timeline-item.done::before { background: var(--success); border-color: var(--success); }
-  .timeline-item.current::before { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79,70,229,0.2); }
+  .venue-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden;
+    box-shadow: var(--shadow); transition: all 0.3s;
+  }
 
-  .timeline-item h4 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-  .timeline-item p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+  .venue-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
 
-  /* ── Animations ── */
+  .venue-header {
+    padding: 24px 24px 0; display: flex; align-items: center; gap: 12px;
+    font-size: 18px; font-weight: 700; color: var(--text);
+  }
+
+  .venue-icon { font-size: 32px; }
+
+  .venue-body {
+    padding: 12px 24px 24px;
+  }
+
+  .venue-tag {
+    display: inline-block; margin-bottom: 8px;
+    padding: 3px 10px; border-radius: 6px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1px; background: var(--snow); color: var(--sky);
+  }
+
+  .venue-body p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* Closing */
+  .closing-slide {
+    justify-content: center; align-items: center; text-align: center;
+    background: linear-gradient(135deg, #0c4a6e 0%, #075985 30%, #1e3a5f 60%, #0f172a 100%);
+    color: white; position: relative; overflow: hidden;
+  }
+
+  .closing-slide::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 30% 70%, rgba(245,158,11,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 70% 30%, rgba(56,189,248,0.1) 0%, transparent 50%);
+  }
+
+  .closing-stats {
+    display: flex; gap: 48px; justify-content: center; margin: 36px 0;
+    position: relative; z-index: 1;
+  }
+
+  .closing-stat { text-align: center; }
+  .closing-stat-num {
+    font-size: 56px; font-weight: 900;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .closing-stat-label { font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
+
+  .closing-next {
+    margin-top: 40px; padding: 16px 32px; border-radius: 16px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    position: relative; z-index: 1;
+    backdrop-filter: blur(8px);
+  }
+
+  .closing-next p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .closing-next h3 { font-size: 22px; color: rgba(255,255,255,0.9); font-weight: 700; }
+
+  /* Animations */
   .slide.active .animate-in { animation: fadeUp 0.6s ease both; }
   .slide.active .animate-in:nth-child(1) { animation-delay: 0.1s; }
   .slide.active .animate-in:nth-child(2) { animation-delay: 0.2s; }
   .slide.active .animate-in:nth-child(3) { animation-delay: 0.3s; }
   .slide.active .animate-in:nth-child(4) { animation-delay: 0.4s; }
+  .slide.active .animate-in:nth-child(5) { animation-delay: 0.5s; }
 
-  /* ── Keyboard Hint ── */
+  /* Medal bar chart */
+  .medal-bar-container {
+    display: flex; flex-direction: column; gap: 10px; margin-top: 16px;
+  }
+
+  .medal-bar-row {
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer; transition: all 0.2s;
+    padding: 4px 0;
+  }
+
+  .medal-bar-row:hover { background: var(--snow); border-radius: 8px; padding: 4px 8px; margin: 0 -8px; }
+
+  .medal-bar-country { width: 120px; font-size: 14px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  .medal-bar-flag { font-size: 20px; }
+
+  .medal-bar-track {
+    flex: 1; height: 28px; background: #f1f5f9; border-radius: 8px;
+    overflow: hidden; display: flex; position: relative;
+  }
+
+  .medal-bar-segment {
+    height: 100%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: white;
+    min-width: 0;
+  }
+
+  .medal-bar-segment.gold-bar { background: #fbbf24; }
+  .medal-bar-segment.silver-bar { background: #94a3b8; }
+  .medal-bar-segment.bronze-bar { background: #d97706; }
+
+  .medal-bar-total {
+    width: 50px; text-align: right; font-size: 16px;
+    font-weight: 800; color: var(--text);
+  }
+
+  /* Keyboard Hint */
   .keyboard-hint {
     position: fixed; bottom: 28px; left: 48px;
     display: flex; gap: 16px; align-items: center;
-    font-size: 12px; color: var(--text-muted); z-index: 50;
+    font-size: 12px; color: rgba(255,255,255,0.3); z-index: 50;
   }
 
   kbd {
     display: inline-flex; align-items: center; justify-content: center;
     min-width: 26px; height: 22px; padding: 0 5px;
-    border-radius: 5px; border: 1px solid var(--border);
-    background: var(--bg); font-family: inherit;
-    font-size: 10px; font-weight: 500; box-shadow: var(--shadow);
+    border-radius: 5px; border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.08); font-family: inherit;
+    font-size: 10px; font-weight: 500;
+    color: rgba(255,255,255,0.4);
   }
 
-  /* Responsive handled by JS scale — no media queries needed */
+  /* Interactive medal toggle */
+  .medal-view-toggle {
+    display: flex; gap: 4px; background: #f1f5f9; border-radius: 10px;
+    padding: 4px; margin-bottom: 16px; width: fit-content;
+  }
+
+  .toggle-btn {
+    padding: 8px 20px; border-radius: 8px; border: none;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; background: transparent; color: var(--text-muted);
+  }
+
+  .toggle-btn.active { background: white; color: var(--sky); box-shadow: var(--shadow); }
+  .toggle-btn:hover:not(.active) { color: var(--text); }
 </style>
 </head>
 <body>
 
+<canvas id="snowCanvas"></canvas>
 <div class="progress-bar" id="progressBar"></div>
 
 <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
@@ -358,285 +672,401 @@
 <div class="slides-wrapper" id="slidesWrapper">
 
   <!-- SLIDE 0: Title -->
-  <div class="slide title-slide" data-title="Title">
-    <div style="margin-bottom:24px;animation:fadeUp 0.8s ease 0.1s both;">
-      <svg width="100" height="100" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 16px rgba(79,70,229,0.2));">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M823.204 867.555C850.538 867.555 871.435 875.767 885.896 892.187C900.533 908.431 907.852 931.825 907.852 962.37C907.852 992.916 900.533 1016.4 885.896 1032.82C871.435 1049.06 850.538 1057.18 823.204 1057.18C796.045 1057.18 775.059 1049.06 760.245 1032.82C745.608 1016.4 738.289 992.916 738.289 962.37C738.289 931.825 745.608 908.431 760.245 892.187C775.059 875.767 796.045 867.555 823.204 867.555ZM823.204 902.25C809.095 902.25 798.337 907.283 790.93 917.347C783.7 927.411 780.083 942.419 780.083 962.37C780.083 982.145 783.7 997.153 790.93 1007.39C798.337 1017.46 809.095 1022.49 823.204 1022.49C837.311 1022.49 847.98 1017.46 855.21 1007.39C862.441 997.153 866.055 982.145 866.055 962.37C866.055 942.419 862.441 927.411 855.21 917.347C847.98 907.283 837.311 902.25 823.204 902.25Z" fill="url(#iconFill)"/>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M434.058 869.673C455.573 869.673 471.71 874.529 482.467 884.24C493.401 893.951 498.868 908.518 498.868 927.94C498.868 947.185 493.401 961.753 482.467 971.641C471.71 981.352 455.573 986.206 434.058 986.206H410.78V1046.86C410.78 1049.68 409.545 1051.89 407.076 1053.48C404.607 1054.89 400.55 1055.6 394.907 1055.6H385.65C380.183 1055.6 376.127 1054.89 373.481 1053.48C371.012 1051.89 369.778 1049.68 369.778 1046.86V880.268C369.778 873.206 373.04 869.673 379.565 869.673H434.058ZM410.78 951.511H434.058C442.17 951.511 447.989 949.657 451.516 945.949C455.219 942.241 457.072 936.238 457.072 927.94C457.071 919.641 455.219 913.638 451.516 909.93C447.989 906.223 442.169 904.37 434.058 904.37H410.78V951.511Z" fill="url(#iconFill)"/>
-        <path d="M550.532 869.146C554.412 869.146 557.852 869.762 560.849 870.997C564.023 872.057 566.493 874.176 568.257 877.354L608.201 949.127C609.612 951.422 610.934 953.895 612.169 956.544C613.579 959.015 614.637 961.222 615.342 963.164C616.224 961.398 617.284 959.104 618.518 956.28C619.929 953.455 621.074 951.159 621.956 949.393L662.694 877.62C664.634 874.265 666.926 872.057 669.572 870.997C672.393 869.762 675.743 869.146 679.622 869.146H693.379C699.022 869.146 703.077 869.939 705.546 871.527C708.015 872.94 709.25 875.059 709.25 877.884V1047.12C709.25 1049.95 708.015 1052.06 705.546 1053.48C703.077 1054.89 699.022 1055.6 693.379 1055.6H687.03C681.563 1055.6 677.506 1054.89 674.861 1053.48C672.393 1051.89 671.16 1049.68 671.16 1046.86V937.474L670.099 937.21C669.218 938.976 668.248 940.741 667.19 942.507C666.132 944.096 665.162 945.773 664.28 947.539L633.067 1003.95C631.656 1006.6 629.627 1008.45 626.981 1009.51C624.513 1010.4 621.074 1010.84 616.666 1010.84H613.227C608.818 1010.84 605.291 1010.4 602.646 1009.51C600.177 1008.45 598.237 1006.6 596.826 1003.95L565.611 947.539C564.729 945.773 563.759 944.096 562.701 942.507C561.643 940.741 560.673 938.976 559.791 937.21L558.734 937.474V1046.86C558.734 1049.68 557.499 1051.89 555.03 1053.48C552.561 1054.89 548.504 1055.6 542.861 1055.6H536.514C531.047 1055.6 526.99 1054.89 524.345 1053.48C521.876 1051.89 520.641 1049.68 520.641 1046.86V877.884C520.641 875.059 521.876 872.94 524.345 871.527C526.99 869.938 531.047 869.146 536.514 869.146H550.532Z" fill="url(#iconFill)"/>
-        <path d="M744.771 220.988C760.805 196.601 781.93 194.833 791.673 217.076L854.356 360.183C864.077 382.375 858.879 420.505 842.845 444.893L639.592 753.233C623.558 777.621 602.433 779.389 592.69 757.145L530.007 614.039C529.473 612.821 528.988 611.554 528.544 610.245L421.951 363.72C413.243 343.637 420.973 329.901 439.125 333.224L555.905 354.606C567.318 356.696 589.037 360.299 590.44 376.03C591.84 391.743 526.002 475.312 525.845 475.511C519.332 485.541 522.295 498.879 532.465 505.303C542.635 511.726 556.158 508.8 562.671 498.77L627.34 399.18L744.771 220.988Z" fill="url(#iconFill)"/>
-        <defs><linearGradient id="iconFill" x1="400" y1="200" x2="900" y2="1080" gradientUnits="userSpaceOnUse"><stop stop-color="#4f46e5"/><stop offset="1" stop-color="#818cf8"/></linearGradient></defs>
-      </svg>
-    </div>
-    <div class="title-badge">INFUSE PMO</div>
-    <h1 class="title-main">Ideas Register</h1>
-    <p class="title-sub">Selected ideas for cross-team alignment and strategic evaluation.</p>
-    <p class="title-date">Presentation Date: March 5, 2026</p>
-  </div>
-
-  <!-- SLIDE 1: Interactive Funnel -->
-  <div class="slide" data-title="Selection Funnel" style="background:linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
-    <span class="section-label funnel animate-in">Selection Process</span>
-    <h2 class="slide-title animate-in">From Ideas to Action</h2>
-    <p class="slide-subtitle animate-in">Click each stage to see what ideas it contains.</p>
-
-    <div class="funnel-container" id="funnelContainer">
-      <div class="funnel-stage stage-all" id="stageAll" onclick="showFunnelDetail('all')">
-        <div class="funnel-count">19</div>
-        <div class="funnel-info">
-          <h3>Ideas Submitted</h3>
-          <p>Jan 28 &ndash; Feb 10, 2026 &bull; 9 External + 10 PMO</p>
-        </div>
-      </div>
-      <div class="funnel-arrow" id="arrow1">&#9660;</div>
-      <div class="funnel-stage stage-selected" id="stageSelected" onclick="showFunnelDetail('selected')">
-        <div class="funnel-count">7</div>
-        <div class="funnel-info">
-          <h3>Selected for Evaluation</h3>
-          <p>Evaluated Feb 10 &bull; Criteria: business value, feasibility</p>
-        </div>
-      </div>
-      <div class="funnel-arrow" id="arrow2">&#9660;</div>
-      <div class="funnel-stage stage-presented" id="stagePresented" onclick="showFunnelDetail('presented')">
-        <div class="funnel-count">5</div>
-        <div class="funnel-info">
-          <h3>Ready for Approval</h3>
-          <p>Fully detailed with business value, effort &amp; implementation plan</p>
-        </div>
+  <div class="slide title-slide" data-title="Milano Cortina 2026">
+    <div class="title-rings">
+      <div class="olympic-rings">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
       </div>
     </div>
-
-    <!-- Funnel detail panels -->
-    <div class="funnel-sidebar" id="funnelDetailAll" style="position:fixed;right:40px;top:50%;transform:translateY(-50%);">
-      <h4>All 19 Ideas Submitted</h4>
-      <ul>
-        <li><strong>External (9):</strong> FE Library, CMS Builder, Leads Feedback, Adherence Dashboard, ABM Automation, Call-Center Reduction, LLM Testing, Reports Optimization, Content AI Checker</li>
-        <li style="margin-top:8px;"><strong>PMO (10):</strong> CI/CD Gates, Auto QA, AI Pair Programming, AI Tools Review, Portfolio Dashboard, Cursor/Claude for Devs, Jira Automation, Proactive Updates, Perf Monitoring, AI Presentations</li>
-      </ul>
-    </div>
-
-    <div class="funnel-sidebar" id="funnelDetailSelected" style="position:fixed;right:40px;top:50%;transform:translateY(-50%);">
-      <h4>7 Selected Ideas</h4>
-      <ul>
-        <li>FE Library for INFUSE Products</li>
-        <li>INFUSE Website Builder (CMS)</li>
-        <li>Leads Delivery Feedback Loop</li>
-        <li>Process Adherence Dashboard</li>
-        <li>ABM Processing Automation</li>
-        <li>Auto QA (PMO)</li>
-        <li>PMO Portfolio Dashboard (PMO)</li>
-      </ul>
-    </div>
-
-    <div class="funnel-sidebar" id="funnelDetailPresented" style="position:fixed;right:40px;top:50%;transform:translateY(-50%);">
-      <h4>5 Ideas Ready to Present</h4>
-      <ul>
-        <li>Unified Front-End Library</li>
-        <li>INFUSE Website Builder</li>
-        <li>Leads Loss Tracking</li>
-        <li>Process Adherence Dashboard</li>
-        <li>ABM Processing Automation</li>
-      </ul>
-      <p style="margin-top:10px;font-size:11px;color:var(--success);font-weight:600;">Detailed on the following slides &rarr;</p>
+    <div class="title-badge">XXV Olympic Winter Games</div>
+    <h1 class="title-main">Milano Cortina 2026</h1>
+    <p class="title-sub">16 days of winter sporting brilliance across the Italian Alps.<br>February 6 &ndash; 22, 2026</p>
+    <p class="title-date">2,900 Athletes &bull; 92 Nations &bull; 116 Events &bull; 8 Sports</p>
+    <div class="title-italia">
+      <span></span><span></span><span></span>
     </div>
   </div>
 
-  <!-- SLIDE 2: Unified FE Library -->
-  <div class="slide" data-title="Unified Front-End Library">
-    <span class="section-label selected animate-in">Selected Idea #1</span>
-    <h2 class="detail-title animate-in">Unified Front-End Library</h2>
-    <div class="detail-meta animate-in">
-      <div class="meta-item">Owner: <strong>Anastasiia Petruk &amp; Vitalii Vorynka</strong></div>
-      <div class="meta-item">Effort: <span class="effort-badge medium">Medium (1 month)</span></div>
-      <div class="meta-item">Start: <strong>April 1, 2026</strong></div>
-    </div>
-    <div class="detail-layout animate-in">
-      <div class="detail-section">
-        <h3>Description</h3>
-        <p>Shared, reusable component library to <strong>speed up frontend development</strong> and <strong>unify design</strong> across all INFUSE applications.</p>
+  <!-- SLIDE 1: Overview -->
+  <div class="slide" data-title="By the Numbers">
+    <span class="section-label overview animate-in">Overview</span>
+    <h2 class="slide-title animate-in">By the Numbers</h2>
+    <p class="slide-subtitle animate-in">A look at the scale of the first co-hosted Winter Olympics across Milan and Cortina d'Ampezzo.</p>
+
+    <div class="stats-grid animate-in">
+      <div class="stat-card">
+        <div class="stat-icon">&#127947;</div>
+        <div class="stat-number">2,900</div>
+        <div class="stat-label">Athletes</div>
       </div>
-      <div class="detail-row">
-        <div class="detail-section">
-          <h3>Business Value</h3>
-          <ul>
-            <li><strong>Faster time-to-market</strong> for new features</li>
-            <li><strong>Consistent UX</strong> across products, less design debt</li>
-            <li><strong>Lower onboarding cost</strong> for new developers</li>
-          </ul>
-        </div>
-        <div class="detail-section">
-          <h3>Implementation Plan</h3>
-          <ol>
-            <li>Build component library with UI, tokens &amp; style guides</li>
-            <li>Publish as internal npm package</li>
-            <li>Roll out across INFUSE products</li>
-          </ol>
-        </div>
+      <div class="stat-card">
+        <div class="stat-icon">&#127758;</div>
+        <div class="stat-number">92</div>
+        <div class="stat-label">Nations</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">&#127941;</div>
+        <div class="stat-number">116</div>
+        <div class="stat-label">Medal Events</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">&#9971;</div>
+        <div class="stat-number">16</div>
+        <div class="stat-label">Disciplines</div>
+      </div>
+    </div>
+
+    <div class="highlight-cards animate-in">
+      <div class="highlight-card">
+        <h4>&#127783;&#65039; First Co-Hosted Games</h4>
+        <p>Milan hosted ice events while Cortina d'Ampezzo and surrounding mountain venues hosted snow sports, spanning Lombardy, Veneto, and Trentino.</p>
+      </div>
+      <div class="highlight-card">
+        <h4>&#9968;&#65039; New Sports Debut</h4>
+        <p>Ski mountaineering made its Olympic debut along with new events: dual moguls, women's large hill ski jumping, and more.</p>
+      </div>
+      <div class="highlight-card">
+        <h4>&#127954; NHL Returns</h4>
+        <p>NHL players competed in the Olympics for the first time since 2014, bringing the world's best hockey talent back to the Games.</p>
       </div>
     </div>
   </div>
 
-  <!-- SLIDE 3: INFUSE Website Builder -->
-  <div class="slide" data-title="INFUSE Website Builder">
-    <span class="section-label selected animate-in">Selected Idea #2</span>
-    <h2 class="detail-title animate-in">INFUSE Website Builder</h2>
-    <div class="detail-meta animate-in">
-      <div class="meta-item">Owner: <strong>Anastasiia Petruk &amp; Vitalii Vorynka</strong></div>
-      <div class="meta-item">Effort: <span class="effort-badge high">High (3 months)</span></div>
-      <div class="meta-item">Start: <strong>April 1, 2026</strong></div>
-    </div>
-    <div class="detail-layout animate-in">
-      <div class="detail-section">
-        <h3>Description</h3>
-        <p>Custom platform to <strong>build and manage INFUSE sites</strong> &mdash; scale pages, content, and integrate analytics, payments, AI <strong>without vendor limitations</strong>.</p>
+  <!-- SLIDE 2: Opening Ceremony -->
+  <div class="slide" data-title="Opening Ceremony">
+    <span class="section-label ceremony animate-in">February 6, 2026</span>
+    <h2 class="slide-title animate-in">"Armonia" &mdash; The Opening Ceremony</h2>
+    <p class="slide-subtitle animate-in">A spectacular celebration at the iconic San Siro Stadium in Milan.</p>
+
+    <div class="ceremony-grid animate-in">
+      <div class="ceremony-left">
+        <div class="ceremony-detail">
+          <h4>Venue</h4>
+          <p><strong>Stadio San Siro, Milan</strong> &mdash; Italy's largest stadium, built in 1926. Nearly <strong>61,000 spectators</strong> witnessed the spectacle, with ticket prices up to $2,300.</p>
+        </div>
+        <div class="ceremony-detail">
+          <h4>Performers</h4>
+          <p><strong>Mariah Carey, Laura Pausini,</strong> and <strong>Andrea Bocelli</strong> headlined the ceremony, alongside <strong>1,200 volunteer performers</strong> in over 1,400 costumes.</p>
+        </div>
+        <div class="ceremony-detail">
+          <h4>Historic Firsts</h4>
+          <p><strong>Two Olympic cauldrons</strong> were lit for the first time &mdash; one in Milan by <strong>Deborah Compagnoni &amp; Alberto Tomba</strong>, and one in Cortina by <strong>Sofia Goggia</strong>. First Games under IOC President <strong>Kirsty Coventry</strong>.</p>
+        </div>
+        <div class="ceremony-detail">
+          <h4>Design Inspiration</h4>
+          <p>The cauldron design was inspired by <strong>Leonardo da Vinci's geometric "knot" patterns</strong>, a tribute to Italy's artistic heritage.</p>
+        </div>
       </div>
-      <div class="detail-row">
-        <div class="detail-section">
-          <h3>Business Value</h3>
-          <ul>
-            <li><strong>Full control</strong> over functionality &amp; integrations</li>
-            <li><strong>No vendor lock-in</strong> or licensing costs</li>
-            <li><strong>Fast experimentation</strong> with AI, payments &amp; analytics</li>
-          </ul>
-        </div>
-        <div class="detail-section">
-          <h3>Implementation Plan</h3>
-          <ol>
-            <li>Build headless CMS with plugin architecture</li>
-            <li>Core framework: admin, editor &amp; API</li>
-            <li>Plugin system for analytics, payments &amp; AI</li>
-            <li>Deploy &amp; migrate content in phases</li>
-          </ol>
-        </div>
+      <div class="ceremony-right">
+        <div class="cauldron-icon">&#128293;</div>
+        <p class="ceremony-caption">The Olympic flame burns bright at<br><strong>Arco della Pace, Milan</strong></p>
+        <p class="ceremony-caption" style="margin-top:16px;font-size:13px;opacity:0.6;">Ceremony across <strong>4 locations</strong> &mdash;<br>a first in Olympic history</p>
       </div>
     </div>
   </div>
 
-  <!-- SLIDE 4: Leads Loss Tracking -->
-  <div class="slide" data-title="Leads Loss Tracking">
-    <span class="section-label selected animate-in">Selected Idea #3</span>
-    <h2 class="detail-title animate-in">Leads Loss Tracking</h2>
-    <div class="detail-meta animate-in">
-      <div class="meta-item">Owner: <strong>Daniel Samborskyi</strong></div>
-      <div class="meta-item">Effort: <span class="effort-badge high">High (3 months)</span></div>
-      <div class="meta-item">Start: <strong>TBD (after acceptance)</strong></div>
+  <!-- SLIDE 3: Medal Table -->
+  <div class="slide" data-title="Medal Standings">
+    <span class="section-label medals animate-in">Final Standings</span>
+    <h2 class="slide-title animate-in">Medal Table &mdash; Top 10 Nations</h2>
+    <p class="slide-subtitle animate-in">Norway dominated with a record 41 medals. Click the toggle to switch views.</p>
+
+    <div class="medal-view-toggle animate-in">
+      <button class="toggle-btn active" onclick="showMedalView('table')">Table</button>
+      <button class="toggle-btn" onclick="showMedalView('chart')">Chart</button>
     </div>
-    <div class="detail-layout animate-in">
-      <div class="detail-section">
-        <h3>Description</h3>
-        <p>Automated <strong>rejection tracking loop</strong> across delivery steps with <strong>transparent reporting</strong> for leads-related products.</p>
-      </div>
-      <div class="detail-row">
-        <div class="detail-section">
-          <h3>Business Value</h3>
-          <ul>
-            <li><strong>End-to-end rejection analytics</strong> across full campaign lifecycle</li>
-            <li>Identify <strong>root causes</strong> &amp; recurring errors</li>
-            <li><strong>Higher delivery rates</strong> by fixing legacy defects</li>
-          </ul>
-        </div>
-        <div class="detail-section">
-          <h3>Implementation Plan</h3>
-          <ol>
-            <li>Add rejection tracking to legacy platforms</li>
-            <li>Provide rejections pipeline per analyst</li>
-            <li>Apply analytics to new systems as shared data</li>
-          </ol>
-        </div>
-      </div>
+
+    <div id="medalTableView" class="medal-table-container animate-in">
+      <table class="medal-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Country</th>
+            <th><span class="medal-dot g"></span>Gold</th>
+            <th><span class="medal-dot s"></span>Silver</th>
+            <th><span class="medal-dot b"></span>Bronze</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight"><td class="rank-cell">1</td><td><div class="country-cell"><span class="country-flag">&#127475;&#127476;</span>Norway</div></td><td class="medal-gold">18</td><td class="medal-silver">12</td><td class="medal-bronze">11</td><td class="medal-total">41</td></tr>
+          <tr><td class="rank-cell">2</td><td><div class="country-cell"><span class="country-flag">&#127482;&#127480;</span>United States</div></td><td class="medal-gold">12</td><td class="medal-silver">12</td><td class="medal-bronze">9</td><td class="medal-total">33</td></tr>
+          <tr><td class="rank-cell">3</td><td><div class="country-cell"><span class="country-flag">&#127475;&#127473;</span>Netherlands</div></td><td class="medal-gold">10</td><td class="medal-silver">7</td><td class="medal-bronze">3</td><td class="medal-total">20</td></tr>
+          <tr><td class="rank-cell">4</td><td><div class="country-cell"><span class="country-flag">&#127470;&#127481;</span>Italy</div></td><td class="medal-gold">10</td><td class="medal-silver">6</td><td class="medal-bronze">14</td><td class="medal-total">30</td></tr>
+          <tr><td class="rank-cell">5</td><td><div class="country-cell"><span class="country-flag">&#127465;&#127466;</span>Germany</div></td><td class="medal-gold">8</td><td class="medal-silver">10</td><td class="medal-bronze">8</td><td class="medal-total">26</td></tr>
+          <tr><td class="rank-cell">6</td><td><div class="country-cell"><span class="country-flag">&#127467;&#127479;</span>France</div></td><td class="medal-gold">8</td><td class="medal-silver">9</td><td class="medal-bronze">6</td><td class="medal-total">23</td></tr>
+          <tr><td class="rank-cell">7</td><td><div class="country-cell"><span class="country-flag">&#127480;&#127466;</span>Sweden</div></td><td class="medal-gold">8</td><td class="medal-silver">6</td><td class="medal-bronze">4</td><td class="medal-total">18</td></tr>
+          <tr><td class="rank-cell">8</td><td><div class="country-cell"><span class="country-flag">&#127464;&#127469;</span>Switzerland</div></td><td class="medal-gold">6</td><td class="medal-silver">9</td><td class="medal-bronze">8</td><td class="medal-total">23</td></tr>
+          <tr><td class="rank-cell">9</td><td><div class="country-cell"><span class="country-flag">&#127462;&#127481;</span>Austria</div></td><td class="medal-gold">5</td><td class="medal-silver">8</td><td class="medal-bronze">5</td><td class="medal-total">18</td></tr>
+          <tr><td class="rank-cell">10</td><td><div class="country-cell"><span class="country-flag">&#127471;&#127477;</span>Japan</div></td><td class="medal-gold">5</td><td class="medal-silver">7</td><td class="medal-bronze">12</td><td class="medal-total">24</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="medalChartView" class="medal-bar-container animate-in" style="display:none;">
+      <!-- Filled by JS -->
     </div>
   </div>
 
-  <!-- SLIDE 5: Process Adherence Dashboard -->
-  <div class="slide" data-title="Process Adherence Dashboard">
-    <span class="section-label selected animate-in">Selected Idea #4</span>
-    <h2 class="detail-title animate-in">Process Adherence Dashboard</h2>
-    <div class="detail-meta animate-in">
-      <div class="meta-item">Owner: <strong>Vlad Moskovskyi</strong></div>
-      <div class="meta-item">Effort: <span class="effort-badge high">High</span></div>
-      <div class="meta-item">Start: <strong>ASAP</strong></div>
-    </div>
-    <div class="detail-layout animate-in">
-      <div class="detail-section">
-        <h3>Description</h3>
-        <p>Track <strong>how well teams follow workflows</strong>, using adherence metrics to find gaps and improvement areas.</p>
-      </div>
-      <div class="detail-row">
-        <div class="detail-section">
-          <h3>Business Value</h3>
-          <ul>
-            <li><strong>Process compliance</strong> visibility across teams</li>
-            <li><strong>Fewer errors</strong>, improved efficiency</li>
-            <li>Pinpoint <strong>training needs</strong> &amp; improvement areas</li>
-          </ul>
+  <!-- SLIDE 4: Star Athletes -->
+  <div class="slide" data-title="Star Athletes">
+    <span class="section-label athletes animate-in">Standout Performers</span>
+    <h2 class="slide-title animate-in">Star Athletes of Milano Cortina</h2>
+    <p class="slide-subtitle animate-in">The athletes who defined these Games with record-breaking and historic performances.</p>
+
+    <div class="athletes-grid animate-in">
+      <div class="athlete-card">
+        <div class="athlete-country">Norway</div>
+        <div class="athlete-name">Johannes H. Kl&aelig;bo</div>
+        <div class="athlete-sport">Cross-Country Skiing</div>
+        <div class="athlete-desc">Won <strong>6 gold medals</strong> at a single Games &mdash; the most ever. Now holds 11 career Olympic golds, the all-time Winter record.</div>
+        <div class="athlete-medals">
+          <span class="athlete-medal-badge badge-gold">6 Gold</span>
         </div>
-        <div class="detail-section">
-          <h3>Implementation Plan</h3>
-          <ol>
-            <li>Define adherence metrics with stakeholders</li>
-            <li>Collect data per process (e.g., DPO Monitoring)</li>
-            <li>Build Power BI dashboards for trends</li>
-            <li>Standardize for new &amp; legacy systems</li>
-          </ol>
+      </div>
+      <div class="athlete-card">
+        <div class="athlete-country">China / USA</div>
+        <div class="athlete-name">Eileen Gu</div>
+        <div class="athlete-sport">Freestyle Skiing</div>
+        <div class="athlete-desc">Became the <strong>most decorated freeskier</strong> in Olympic history with 6 career medals &mdash; including halfpipe gold with a 94.75 final run.</div>
+        <div class="athlete-medals">
+          <span class="athlete-medal-badge badge-gold">1 Gold</span>
+          <span class="athlete-medal-badge badge-silver">2 Silver</span>
+        </div>
+      </div>
+      <div class="athlete-card">
+        <div class="athlete-country">United States</div>
+        <div class="athlete-name">Mikaela Shiffrin</div>
+        <div class="athlete-sport">Alpine Skiing</div>
+        <div class="athlete-desc"><strong>Redemption gold</strong> in slalom, winning by 1.50 seconds. Sweet comeback after no medals in her previous 8 Olympic starts.</div>
+        <div class="athlete-medals">
+          <span class="athlete-medal-badge badge-gold">1 Gold</span>
+        </div>
+      </div>
+      <div class="athlete-card">
+        <div class="athlete-country">United States</div>
+        <div class="athlete-name">Alysa Liu</div>
+        <div class="athlete-sport">Figure Skating</div>
+        <div class="athlete-desc">Stunning <strong>comeback</strong> after retiring at 16 post-Beijing 2022. Returned in 2024 and delivered a sensational free skate for <strong>Olympic gold</strong>.</div>
+        <div class="athlete-medals">
+          <span class="athlete-medal-badge badge-gold">1 Gold</span>
+        </div>
+      </div>
+      <div class="athlete-card">
+        <div class="athlete-country">Sweden</div>
+        <div class="athlete-name">Ebba Andersson</div>
+        <div class="athlete-sport">Cross-Country Skiing</div>
+        <div class="athlete-desc">Won the women's 50km mass start classic &mdash; her first gold &mdash; finishing <strong>2:15 ahead</strong>. Earned 4 total medals in Milan.</div>
+        <div class="athlete-medals">
+          <span class="athlete-medal-badge badge-gold">1 Gold</span>
+          <span class="athlete-medal-badge badge-silver">3 Silver</span>
+        </div>
+      </div>
+      <div class="athlete-card">
+        <div class="athlete-country">United States</div>
+        <div class="athlete-name">Jack Hughes</div>
+        <div class="athlete-sport">Ice Hockey</div>
+        <div class="athlete-desc">Scored the <strong>overtime game-winner</strong> against Canada in the gold medal final. First U.S. men's hockey gold since Lake Placid 1980.</div>
+        <div class="athlete-medals">
+          <span class="athlete-medal-badge badge-gold">1 Gold</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- SLIDE 6: ABM Processing Automation -->
-  <div class="slide" data-title="ABM Processing Automation">
-    <span class="section-label selected animate-in">Selected Idea #5</span>
-    <h2 class="detail-title animate-in">ABM Processing Automation</h2>
-    <div class="detail-meta animate-in">
-      <div class="meta-item">Owner: <strong>Daniel Samborskyi &amp; Olha Mostipan</strong></div>
-      <div class="meta-item">Effort: <span class="effort-badge high">High (3-6 months)</span></div>
-      <div class="meta-item">Start: <strong>Already in Planning</strong></div>
-    </div>
-    <div class="detail-layout animate-in">
-      <div class="detail-section">
-        <h3>Description</h3>
-        <p>Automate ABM <strong>deduplication, enrichment &amp; filtering</strong> on campaign launch to <strong>cut manual effort</strong> and minimize rejection rates.</p>
-      </div>
-      <div class="detail-row">
-        <div class="detail-section">
-          <h3>Business Value</h3>
-          <ul>
-            <li><strong>~80% automated</strong> ABM cleaning &amp; enrichment</li>
-            <li><strong>Less manual work</strong> for CC, ListGen &amp; Call Center</li>
-            <li><strong>Fewer errors</strong> in contact processing</li>
-          </ul>
+  <!-- SLIDE 5: Historic Moments -->
+  <div class="slide" data-title="Historic Moments">
+    <span class="section-label moments animate-in">Unforgettable</span>
+    <h2 class="slide-title animate-in">Historic Moments</h2>
+    <p class="slide-subtitle animate-in">The stories that made Milano Cortina 2026 one for the ages.</p>
+
+    <div class="moments-grid animate-in">
+      <div class="moment-card">
+        <div class="moment-icon">&#127954;</div>
+        <div class="moment-content">
+          <h4>Miracle on Italian Ice</h4>
+          <p>Team USA defeated Canada in overtime for men's hockey gold &mdash; the first since the "Miracle on Ice" at Lake Placid 1980. Connor Hellebuyck made 41 saves before Jack Hughes buried the winner.</p>
+          <span class="moment-tag" style="background:#eff6ff;color:#2563eb;">Ice Hockey</span>
         </div>
-        <div class="detail-section">
-          <h3>Implementation Plan</h3>
-          <ol>
-            <li>Build ABM &amp; SUP cleaning tool</li>
-            <li>Enrich accounts with company data</li>
-            <li>Integrate into business workflow</li>
-            <li>Eliminate work duplication</li>
-          </ol>
+      </div>
+      <div class="moment-card">
+        <div class="moment-icon">&#127942;</div>
+        <div class="moment-content">
+          <h4>Norway Shatters Records</h4>
+          <p>Norway won 41 medals, surpassing their own record of 39 set at PyeongChang 2018. Their 18 golds also broke the single-Games record of 16 from Beijing 2022.</p>
+          <span class="moment-tag" style="background:#fef3c7;color:#92400e;">Record</span>
+        </div>
+      </div>
+      <div class="moment-card">
+        <div class="moment-icon">&#127463;&#127479;</div>
+        <div class="moment-content">
+          <h4>Brazil Makes History</h4>
+          <p>Brazil won their first-ever Winter Olympic medal &mdash; and it was gold. The first tropical, Latin American, and South American nation to medal at the Winter Games.</p>
+          <span class="moment-tag" style="background:#ecfdf5;color:#059669;">Historic First</span>
+        </div>
+      </div>
+      <div class="moment-card">
+        <div class="moment-icon">&#127944;</div>
+        <div class="moment-content">
+          <h4>U.S. Women's Hockey Three-Peat</h4>
+          <p>Team USA trailed Canada 1-0 until Hilary Knight equalized in the 58th minute, then Megan Keller scored the OT winner for the USA's third women's hockey gold.</p>
+          <span class="moment-tag" style="background:#eff6ff;color:#2563eb;">Ice Hockey</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- SLIDE 7: Thank You -->
-  <div class="slide title-slide" data-title="Thank You">
-    <div style="margin-bottom:24px;animation:fadeUp 0.8s ease 0.1s both;">
-      <svg width="100" height="100" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 16px rgba(79,70,229,0.2));">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M823.204 867.555C850.538 867.555 871.435 875.767 885.896 892.187C900.533 908.431 907.852 931.825 907.852 962.37C907.852 992.916 900.533 1016.4 885.896 1032.82C871.435 1049.06 850.538 1057.18 823.204 1057.18C796.045 1057.18 775.059 1049.06 760.245 1032.82C745.608 1016.4 738.289 992.916 738.289 962.37C738.289 931.825 745.608 908.431 760.245 892.187C775.059 875.767 796.045 867.555 823.204 867.555ZM823.204 902.25C809.095 902.25 798.337 907.283 790.93 917.347C783.7 927.411 780.083 942.419 780.083 962.37C780.083 982.145 783.7 997.153 790.93 1007.39C798.337 1017.46 809.095 1022.49 823.204 1022.49C837.311 1022.49 847.98 1017.46 855.21 1007.39C862.441 997.153 866.055 982.145 866.055 962.37C866.055 942.419 862.441 927.411 855.21 917.347C847.98 907.283 837.311 902.25 823.204 902.25Z" fill="url(#iconFill2)"/>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M434.058 869.673C455.573 869.673 471.71 874.529 482.467 884.24C493.401 893.951 498.868 908.518 498.868 927.94C498.868 947.185 493.401 961.753 482.467 971.641C471.71 981.352 455.573 986.206 434.058 986.206H410.78V1046.86C410.78 1049.68 409.545 1051.89 407.076 1053.48C404.607 1054.89 400.55 1055.6 394.907 1055.6H385.65C380.183 1055.6 376.127 1054.89 373.481 1053.48C371.012 1051.89 369.778 1049.68 369.778 1046.86V880.268C369.778 873.206 373.04 869.673 379.565 869.673H434.058ZM410.78 951.511H434.058C442.17 951.511 447.989 949.657 451.516 945.949C455.219 942.241 457.072 936.238 457.072 927.94C457.071 919.641 455.219 913.638 451.516 909.93C447.989 906.223 442.169 904.37 434.058 904.37H410.78V951.511Z" fill="url(#iconFill2)"/>
-        <path d="M550.532 869.146C554.412 869.146 557.852 869.762 560.849 870.997C564.023 872.057 566.493 874.176 568.257 877.354L608.201 949.127C609.612 951.422 610.934 953.895 612.169 956.544C613.579 959.015 614.637 961.222 615.342 963.164C616.224 961.398 617.284 959.104 618.518 956.28C619.929 953.455 621.074 951.159 621.956 949.393L662.694 877.62C664.634 874.265 666.926 872.057 669.572 870.997C672.393 869.762 675.743 869.146 679.622 869.146H693.379C699.022 869.146 703.077 869.939 705.546 871.527C708.015 872.94 709.25 875.059 709.25 877.884V1047.12C709.25 1049.95 708.015 1052.06 705.546 1053.48C703.077 1054.89 699.022 1055.6 693.379 1055.6H687.03C681.563 1055.6 677.506 1054.89 674.861 1053.48C672.393 1051.89 671.16 1049.68 671.16 1046.86V937.474L670.099 937.21C669.218 938.976 668.248 940.741 667.19 942.507C666.132 944.096 665.162 945.773 664.28 947.539L633.067 1003.95C631.656 1006.6 629.627 1008.45 626.981 1009.51C624.513 1010.4 621.074 1010.84 616.666 1010.84H613.227C608.818 1010.84 605.291 1010.4 602.646 1009.51C600.177 1008.45 598.237 1006.6 596.826 1003.95L565.611 947.539C564.729 945.773 563.759 944.096 562.701 942.507C561.643 940.741 560.673 938.976 559.791 937.21L558.734 937.474V1046.86C558.734 1049.68 557.499 1051.89 555.03 1053.48C552.561 1054.89 548.504 1055.6 542.861 1055.6H536.514C531.047 1055.6 526.99 1054.89 524.345 1053.48C521.876 1051.89 520.641 1049.68 520.641 1046.86V877.884C520.641 875.059 521.876 872.94 524.345 871.527C526.99 869.938 531.047 869.146 536.514 869.146H550.532Z" fill="url(#iconFill2)"/>
-        <path d="M744.771 220.988C760.805 196.601 781.93 194.833 791.673 217.076L854.356 360.183C864.077 382.375 858.879 420.505 842.845 444.893L639.592 753.233C623.558 777.621 602.433 779.389 592.69 757.145L530.007 614.039C529.473 612.821 528.988 611.554 528.544 610.245L421.951 363.72C413.243 343.637 420.973 329.901 439.125 333.224L555.905 354.606C567.318 356.696 589.037 360.299 590.44 376.03C591.84 391.743 526.002 475.312 525.845 475.511C519.332 485.541 522.295 498.879 532.465 505.303C542.635 511.726 556.158 508.8 562.671 498.77L627.34 399.18L744.771 220.988Z" fill="url(#iconFill2)"/>
-        <defs><linearGradient id="iconFill2" x1="400" y1="200" x2="900" y2="1080" gradientUnits="userSpaceOnUse"><stop stop-color="#4f46e5"/><stop offset="1" stop-color="#818cf8"/></linearGradient></defs>
-      </svg>
+  <!-- SLIDE 6: New Sports -->
+  <div class="slide" data-title="Ski Mountaineering Debut">
+    <span class="section-label sports animate-in">Olympic Debut</span>
+    <h2 class="slide-title animate-in">Ski Mountaineering &mdash; A New Olympic Sport</h2>
+    <p class="slide-subtitle animate-in">The fast-paced alpine discipline made its thrilling debut in Bormio with sprint and relay events.</p>
+
+    <div class="new-sport-layout animate-in">
+      <div class="sport-info">
+        <div class="sport-card">
+          <h4>&#9968;&#65039; What is Ski Mountaineering?</h4>
+          <p>Athletes race up and down mountain terrain, switching between skiing, carrying skis on their backs, and climbing steps. Sprint events feature elimination rounds leading to a dramatic final.</p>
+        </div>
+        <div class="sport-card">
+          <h4>&#127941; Three Medal Events</h4>
+          <p>Men's Sprint, Women's Sprint, and Mixed Relay were contested at the Stelvio Ski Centre in Bormio on February 19 and 21.</p>
+        </div>
+        <div class="sport-card">
+          <h4>&#127758; Dominant Nations</h4>
+          <p>France, Spain, and Switzerland proved to be the powerhouses, collecting multiple medals. The U.S. team finished 4th in the mixed relay &mdash; ahead of host Italy.</p>
+        </div>
+      </div>
+      <div class="sport-visual">
+        <div class="mountain-icon">&#9968;&#65039;</div>
+        <div class="sport-results">
+          <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:12px;">Gold Medalists</p>
+          <div class="result-row">
+            <span class="result-medal">&#129351;</span>
+            <span class="result-name">Marianne Fatton</span>
+            <span class="result-country">SUI &bull; Women's Sprint</span>
+          </div>
+          <div class="result-row">
+            <span class="result-medal">&#129351;</span>
+            <span class="result-name">Oriol Cardona</span>
+            <span class="result-country">ESP &bull; Men's Sprint</span>
+          </div>
+          <div class="result-row" style="background:rgba(255,255,255,0.5);">
+            <span class="result-medal">&#127942;</span>
+            <span class="result-name" style="font-size:13px;">Mixed Relay</span>
+            <span class="result-country">Results by nation</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <h1 class="title-main">Thank You</h1>
   </div>
+
+  <!-- SLIDE 7: Venues -->
+  <div class="slide" data-title="Iconic Venues">
+    <span class="section-label venues animate-in">Across Northern Italy</span>
+    <h2 class="slide-title animate-in">Iconic Venues</h2>
+    <p class="slide-subtitle animate-in">Events spanned 3 regions &mdash; Lombardy, Veneto, and Trentino &mdash; from urban arenas to alpine peaks.</p>
+
+    <div class="venues-grid animate-in">
+      <div class="venue-card">
+        <div class="venue-header"><span class="venue-icon">&#127967;</span>San Siro Stadium</div>
+        <div class="venue-body">
+          <span class="venue-tag">Milan</span>
+          <p>Italy's largest stadium (est. 1926). Hosted the Opening Ceremony "Armonia" before 61,000 spectators.</p>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-header"><span class="venue-icon">&#9971;</span>Milano Ice Arena</div>
+        <div class="venue-body">
+          <span class="venue-tag">Milan</span>
+          <p>Hosted all figure skating and short track speed skating events in the heart of the city.</p>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-header"><span class="venue-icon">&#127954;</span>Santa Giulia Arena</div>
+        <div class="venue-body">
+          <span class="venue-tag">Milan &bull; New Build</span>
+          <p>A brand new 12,000-seat arena designed by David Chipperfield for ice hockey.</p>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-header"><span class="venue-icon">&#128755;</span>Cortina Sliding Centre</div>
+        <div class="venue-body">
+          <span class="venue-tag">Cortina d'Ampezzo</span>
+          <p>Rebuilt version of the historic 1956 Olympic sliding track. Hosted bobsled, luge, and skeleton.</p>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-header"><span class="venue-icon">&#127935;</span>Livigno Snow Park</div>
+        <div class="venue-body">
+          <span class="venue-tag">Livigno</span>
+          <p>Near the Swiss border at high altitude. Hosted freestyle skiing and snowboarding events.</p>
+        </div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-header"><span class="venue-icon">&#127963;</span>Verona Arena</div>
+        <div class="venue-body">
+          <span class="venue-tag">Verona &bull; UNESCO Heritage</span>
+          <p>1st-century Roman amphitheater, older than the Colosseum. Hosted the Closing Ceremony "Beauty in Action."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Closing -->
+  <div class="slide closing-slide" data-title="Legacy & Next Games">
+    <div style="position:relative;z-index:1;">
+      <div class="title-rings" style="margin-bottom:24px;">
+        <div class="olympic-rings">
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+        </div>
+      </div>
+      <h1 class="title-main" style="font-size:56px;">Milano Cortina 2026</h1>
+      <p class="title-sub" style="margin:0 auto;">16 unforgettable days. 29 nations on the podium. Records shattered.</p>
+
+      <div class="closing-stats">
+        <div class="closing-stat">
+          <div class="closing-stat-num">41</div>
+          <div class="closing-stat-label">Norway Record</div>
+        </div>
+        <div class="closing-stat">
+          <div class="closing-stat-num">29</div>
+          <div class="closing-stat-label">Medal Nations</div>
+        </div>
+        <div class="closing-stat">
+          <div class="closing-stat-num">19</div>
+          <div class="closing-stat-label">Gold Nations</div>
+        </div>
+        <div class="closing-stat">
+          <div class="closing-stat-num">6</div>
+          <div class="closing-stat-label">Kl&aelig;bo Golds</div>
+        </div>
+      </div>
+
+      <div class="closing-next">
+        <p>The flame passes to</p>
+        <h3>French Alps 2030</h3>
+      </div>
+
+      <div class="title-italia" style="justify-content:center;margin-top:32px;">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <div class="keyboard-hint">
   <span><kbd>&larr;</kbd> <kbd>&rarr;</kbd> Navigate</span>
-  <span><kbd>Esc</kbd> Close</span>
+  <span><kbd>Esc</kbd> Close panels</span>
   <span><kbd>M</kbd> Menu</span>
 </div>
 
@@ -649,7 +1079,7 @@
 </div>
 
 <script>
-// ── Scale slides to fit any window ──
+// Scale
 function updateScale() {
   const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
   document.getElementById('slidesWrapper').style.setProperty('--slide-scale', s);
@@ -657,14 +1087,55 @@ function updateScale() {
 updateScale();
 window.addEventListener('resize', updateScale);
 
+// Snow particles
+(function initSnow() {
+  const canvas = document.getElementById('snowCanvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  const count = 60;
+
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 3 + 1,
+      speed: Math.random() * 0.5 + 0.2,
+      wind: Math.random() * 0.3 - 0.15,
+      opacity: Math.random() * 0.4 + 0.1
+    });
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.y += p.speed;
+      p.x += p.wind + Math.sin(p.y * 0.01) * 0.3;
+      if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
+      if (p.x > canvas.width) p.x = 0;
+      if (p.x < 0) p.x = canvas.width;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// Slides
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
 const totalSlides = slides.length;
 
 function updateSlide() {
   slides.forEach((s, i) => {
-    s.classList.remove('active', 'exit-left');
-    if (i < currentSlide) s.classList.add('exit-left');
+    s.classList.remove('active');
   });
   slides[currentSlide].classList.add('active');
 
@@ -678,11 +1149,8 @@ function updateSlide() {
   document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
   document.querySelectorAll('.toc-item').forEach((t, i) => t.classList.toggle('active', i === currentSlide));
 
-  // Animate funnel on slide 1
-  if (currentSlide === 1) animateFunnel();
-
-  // Close funnel details when leaving
-  document.querySelectorAll('.funnel-sidebar').forEach(s => s.classList.remove('show'));
+  // Animate medal bars on slide 3
+  if (currentSlide === 3) setTimeout(animateMedalBars, 300);
 }
 
 function nextSlide() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); } }
@@ -692,47 +1160,88 @@ function goToSlide(i) { currentSlide = i; updateSlide(); closeSidebar(); }
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
 function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); }
 
-// ── Funnel Animation ──
-function animateFunnel() {
-  const stages = ['stageAll', 'stageSelected', 'stagePresented'];
-  const arrows = ['arrow1', 'arrow2'];
+// Medal data
+const medalData = [
+  { country: 'Norway', flag: '\u{1F1F3}\u{1F1F4}', g: 18, s: 12, b: 11 },
+  { country: 'United States', flag: '\u{1F1FA}\u{1F1F8}', g: 12, s: 12, b: 9 },
+  { country: 'Netherlands', flag: '\u{1F1F3}\u{1F1F1}', g: 10, s: 7, b: 3 },
+  { country: 'Italy', flag: '\u{1F1EE}\u{1F1F9}', g: 10, s: 6, b: 14 },
+  { country: 'Germany', flag: '\u{1F1E9}\u{1F1EA}', g: 8, s: 10, b: 8 },
+  { country: 'France', flag: '\u{1F1EB}\u{1F1F7}', g: 8, s: 9, b: 6 },
+  { country: 'Sweden', flag: '\u{1F1F8}\u{1F1EA}', g: 8, s: 6, b: 4 },
+  { country: 'Switzerland', flag: '\u{1F1E8}\u{1F1ED}', g: 6, s: 9, b: 8 },
+  { country: 'Austria', flag: '\u{1F1E6}\u{1F1F9}', g: 5, s: 8, b: 5 },
+  { country: 'Japan', flag: '\u{1F1EF}\u{1F1F5}', g: 5, s: 7, b: 12 },
+];
 
-  stages.forEach(id => document.getElementById(id).classList.remove('visible'));
-  arrows.forEach(id => document.getElementById(id).classList.remove('visible'));
+const maxTotal = Math.max(...medalData.map(d => d.g + d.s + d.b));
 
-  setTimeout(() => document.getElementById('stageAll').classList.add('visible'), 200);
-  setTimeout(() => document.getElementById('arrow1').classList.add('visible'), 600);
-  setTimeout(() => document.getElementById('stageSelected').classList.add('visible'), 800);
-  setTimeout(() => document.getElementById('arrow2').classList.add('visible'), 1200);
-  setTimeout(() => document.getElementById('stagePresented').classList.add('visible'), 1400);
+// Build chart view
+function buildMedalChart() {
+  const container = document.getElementById('medalChartView');
+  container.innerHTML = '';
+  medalData.forEach(d => {
+    const total = d.g + d.s + d.b;
+    const row = document.createElement('div');
+    row.className = 'medal-bar-row';
+    row.innerHTML = `
+      <div class="medal-bar-country"><span class="medal-bar-flag">${d.flag}</span>${d.country}</div>
+      <div class="medal-bar-track">
+        <div class="medal-bar-segment gold-bar" style="width:0%" data-target="${(d.g / maxTotal) * 100}">${d.g}</div>
+        <div class="medal-bar-segment silver-bar" style="width:0%" data-target="${(d.s / maxTotal) * 100}">${d.s}</div>
+        <div class="medal-bar-segment bronze-bar" style="width:0%" data-target="${(d.b / maxTotal) * 100}">${d.b}</div>
+      </div>
+      <div class="medal-bar-total">${total}</div>
+    `;
+    container.appendChild(row);
+  });
+}
+buildMedalChart();
+
+function animateMedalBars() {
+  document.querySelectorAll('.medal-bar-segment').forEach(seg => {
+    const target = seg.dataset.target;
+    if (target) seg.style.width = target + '%';
+  });
 }
 
-// ── Funnel Detail Panels ──
-let activeFunnelPanel = null;
-function showFunnelDetail(stage) {
-  const panels = { all: 'funnelDetailAll', selected: 'funnelDetailSelected', presented: 'funnelDetailPresented' };
-  const panelId = panels[stage];
-
-  document.querySelectorAll('.funnel-sidebar').forEach(s => s.classList.remove('show'));
-
-  if (activeFunnelPanel === panelId) {
-    activeFunnelPanel = null;
-    return;
+// Medal view toggle
+function showMedalView(view) {
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  if (view === 'table') {
+    document.getElementById('medalTableView').style.display = '';
+    document.getElementById('medalChartView').style.display = 'none';
+    document.querySelectorAll('.toggle-btn')[0].classList.add('active');
+  } else {
+    document.getElementById('medalTableView').style.display = 'none';
+    document.getElementById('medalChartView').style.display = '';
+    document.querySelectorAll('.toggle-btn')[1].classList.add('active');
+    setTimeout(animateMedalBars, 100);
   }
-
-  document.getElementById(panelId).classList.add('show');
-  activeFunnelPanel = panelId;
 }
 
-// ── Keyboard ──
+// Keyboard
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
   else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
-  else if (e.key === 'Escape') { closeSidebar(); document.querySelectorAll('.funnel-sidebar').forEach(s => s.classList.remove('show')); activeFunnelPanel = null; }
+  else if (e.key === 'Escape') { closeSidebar(); }
   else if (e.key === 'm' || e.key === 'M') toggleSidebar();
 });
 
-// ── Init ──
+// Touch swipe support
+let touchStartX = 0;
+let touchEndX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, false);
+document.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  const diff = touchStartX - touchEndX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) nextSlide();
+    else prevSlide();
+  }
+}, false);
+
+// Init
 (function init() {
   const dotsContainer = document.getElementById('slideDots');
   const tocContainer = document.getElementById('tocList');
