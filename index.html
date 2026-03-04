@@ -44,7 +44,7 @@
   .slide {
     position: absolute; inset: 0;
     display: flex; flex-direction: column;
-    padding: 48px 64px;
+    padding: 36px 56px 60px;
     opacity: 0; transform: translateX(60px);
     pointer-events: none;
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -169,9 +169,9 @@
   /* ── Section Labels ── */
   .section-label {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 6px 16px; border-radius: 6px;
-    font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1.5px; margin-bottom: 12px;
+    padding: 5px 14px; border-radius: 6px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; margin-bottom: 6px;
   }
 
   .section-label.funnel { background: var(--primary-bg); color: var(--primary); }
@@ -244,38 +244,49 @@
 
   /* ── Detail Cards ── */
   .detail-layout {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 24px; flex: 1;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .detail-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
   }
 
   .detail-section {
     background: var(--bg); border: 1px solid var(--border);
-    border-radius: 16px; padding: 28px;
+    border-radius: 12px; padding: 18px 22px;
     box-shadow: var(--shadow);
   }
 
   .detail-section h3 {
     font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
-    color: var(--text-muted); margin-bottom: 12px; font-weight: 700;
+    color: var(--text-muted); margin-bottom: 10px; font-weight: 700;
     display: flex; align-items: center; gap: 8px;
   }
 
-  .detail-section p { font-size: 15px; line-height: 1.7; color: var(--text-secondary); }
-  .detail-section.full-width { grid-column: 1 / -1; }
+  .detail-section p { font-size: 15px; line-height: 1.65; color: var(--text-secondary); }
 
-  .detail-title { font-size: 32px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+  .detail-section ul, .detail-section ol {
+    margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.75; color: var(--text-secondary);
+  }
 
-  .detail-meta { display: flex; gap: 24px; margin-bottom: 28px; flex-wrap: wrap; }
+  .detail-section ul li, .detail-section ol li { margin-bottom: 2px; }
+  .detail-section ul { list-style: disc; }
+  .detail-section ol { list-style: decimal; }
+
+  .detail-title { font-size: 30px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+
+  .detail-meta { display: flex; gap: 20px; margin-bottom: 14px; flex-wrap: wrap; }
 
   .meta-item {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 13px; color: var(--text-muted);
+    display: flex; align-items: center; gap: 6px;
+    font-size: 14px; color: var(--text-muted);
   }
 
   .meta-item strong { color: var(--text); font-weight: 600; }
 
   .effort-badge {
     display: inline-flex; align-items: center;
-    padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+    padding: 4px 14px; border-radius: 6px; font-size: 14px; font-weight: 600;
   }
 
   .effort-badge.high { background: var(--danger-bg); color: var(--danger); }
@@ -326,11 +337,11 @@
   }
 
   /* ── Responsive ── */
-  @media (max-width: 1024px) {
-    .slide { padding: 32px; }
-    .title-main { font-size: 40px; }
-    .detail-layout { grid-template-columns: 1fr; }
+  @media (max-width: 768px) {
+    .slide { padding: 24px; }
+    .title-main { font-size: 36px; }
     .funnel-stage { width: 90% !important; }
+    .detail-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -444,13 +455,23 @@
         <h3>Description</h3>
         <p>Increase the speed of frontend development and unify the design of all applications with a shared, reusable component library.</p>
       </div>
-      <div class="detail-section">
-        <h3>Business Value</h3>
-        <p>Faster time-to-market for new features; consistent UX across all products reduces design debt and improves brand perception; lower onboarding cost for new developers.</p>
-      </div>
-      <div class="detail-section full-width">
-        <h3>Implementation Plan</h3>
-        <p>Build a shared component library with reusable UI components, design tokens, and style guidelines. Publish as an internal npm package. Roll out incrementally across all INFUSE products.</p>
+      <div class="detail-row">
+        <div class="detail-section">
+          <h3>Business Value</h3>
+          <ul>
+            <li>Faster time-to-market for new features</li>
+            <li>Consistent UX across all products, reducing design debt</li>
+            <li>Lower onboarding cost for new developers</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <h3>Implementation Plan</h3>
+          <ol>
+            <li>Build shared component library with reusable UI, design tokens &amp; style guidelines</li>
+            <li>Publish as an internal npm package</li>
+            <li>Roll out incrementally across INFUSE products</li>
+          </ol>
+        </div>
       </div>
     </div>
   </div>
@@ -469,13 +490,24 @@
         <h3>Description</h3>
         <p>Fast build and manage own sites, especially content. Quickly scale websites, add new pages, expand content, integrate third-party analytics, payment services, AI models, and any other capabilities without vendor limitations.</p>
       </div>
-      <div class="detail-section">
-        <h3>Business Value</h3>
-        <p>Full control over site functionality and integrations; eliminates vendor lock-in and licensing costs of off-the-shelf CMS/CRM tools; enables rapid experimentation with AI, payments, and analytics without platform constraints.</p>
-      </div>
-      <div class="detail-section full-width">
-        <h3>Implementation Plan</h3>
-        <p>Develop a custom headless CMS/CRM platform with a modular, plugin-based architecture. Build a core framework with admin panel, content editor, and API layer. Create a plugin system for analytics, payments, and AI integrations. Deploy on own infrastructure and migrate existing site content in phases.</p>
+      <div class="detail-row">
+        <div class="detail-section">
+          <h3>Business Value</h3>
+          <ul>
+            <li>Full control over site functionality and integrations</li>
+            <li>Eliminates vendor lock-in and licensing costs</li>
+            <li>Rapid experimentation with AI, payments &amp; analytics</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <h3>Implementation Plan</h3>
+          <ol>
+            <li>Develop custom headless CMS with modular, plugin-based architecture</li>
+            <li>Build core framework: admin panel, content editor &amp; API layer</li>
+            <li>Create plugin system for analytics, payments &amp; AI</li>
+            <li>Deploy on own infrastructure, migrate content in phases</li>
+          </ol>
+        </div>
       </div>
     </div>
   </div>
@@ -494,13 +526,23 @@
         <h3>Description</h3>
         <p>Implement an automated feedback and rejection tracking loop across delivery steps, with transparent reporting for leads-related products.</p>
       </div>
-      <div class="detail-section">
-        <h3>Business Value</h3>
-        <p>End-to-end analytics on contact rejections across the entire campaign lifecycle to identify root causes, recurring validation errors, and system handoff issues. Improves delivery rates by enabling removal of deprecated rules and faster detection of legacy system defects.</p>
-      </div>
-      <div class="detail-section full-width">
-        <h3>Implementation Plan</h3>
-        <p>Implement minimal automation changes to legacy platforms for contact rejection tracking with clear reasons. Ensure access to full rejections pipeline for each analyst. Apply rejection analytics gathering to new systems as part of mandatory shared information stored in aggregated campaign data for clear analysis and issue tracking.</p>
+      <div class="detail-row">
+        <div class="detail-section">
+          <h3>Business Value</h3>
+          <ul>
+            <li>End-to-end rejection analytics across the full campaign lifecycle</li>
+            <li>Identify root causes, recurring errors &amp; handoff issues</li>
+            <li>Improve delivery rates by removing deprecated rules &amp; detecting legacy defects faster</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <h3>Implementation Plan</h3>
+          <ol>
+            <li>Add rejection tracking with clear reasons to legacy platforms</li>
+            <li>Provide full rejections pipeline access per analyst</li>
+            <li>Apply rejection analytics to new systems as mandatory shared data</li>
+          </ol>
+        </div>
       </div>
     </div>
   </div>
@@ -519,13 +561,24 @@
         <h3>Description</h3>
         <p>Track how well teams follow defined workflows and standards, using adherence metrics to identify gaps and improvement opportunities.</p>
       </div>
-      <div class="detail-section">
-        <h3>Business Value</h3>
-        <p>By monitoring adherence, we can ensure processes are followed correctly, leading to improved efficiency and reduced errors. It also highlights areas for process improvement and training needs, enhancing overall productivity.</p>
-      </div>
-      <div class="detail-section full-width">
-        <h3>Implementation Plan</h3>
-        <p>Each team collects metrics for key business processes (e.g., DPO Rejection Monitoring). Based on this data, Power BI dashboards will visualize adherence rates and trends. Stakeholders will be involved in defining key adherence metrics. Should be used as a rule for all new agent development and checked for implementation with legacy systems.</p>
+      <div class="detail-row">
+        <div class="detail-section">
+          <h3>Business Value</h3>
+          <ul>
+            <li>Ensure processes are followed correctly across teams</li>
+            <li>Improved efficiency and reduced errors</li>
+            <li>Highlight areas for process improvement &amp; training</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <h3>Implementation Plan</h3>
+          <ol>
+            <li>Define key adherence metrics with stakeholders per team</li>
+            <li>Collect metrics for key processes (e.g., DPO Rejection Monitoring)</li>
+            <li>Build Power BI dashboards to visualize rates &amp; trends</li>
+            <li>Apply as standard for new agent development &amp; legacy systems</li>
+          </ol>
+        </div>
       </div>
     </div>
   </div>
@@ -544,13 +597,24 @@
         <h3>Description</h3>
         <p>Implement automated ABM data deduplication, formatting, enrichment, suppression, and filtering on campaign launch to reduce manual effort, avoid work duplication, remove data inconsistencies, and minimize rejection rates.</p>
       </div>
-      <div class="detail-section">
-        <h3>Business Value</h3>
-        <p>A centralized 80% automated business process with ABM cleaning &amp; enrichment tool that prepares ABM for lead generation, reducing excessive contact processing, repetitive manual work, and minimizing errors for CC, ListGen, Call Center, and LV teams.</p>
-      </div>
-      <div class="detail-section full-width">
-        <h3>Implementation Plan</h3>
-        <p>Build an automated tool combined with business process changes that standardizes ABM &amp; SUP cleaning and enriches ABM accounts with company information. Integrate directly into business workflow to ensure scalability and operational efficiency across departments, excluding work duplication.</p>
+      <div class="detail-row">
+        <div class="detail-section">
+          <h3>Business Value</h3>
+          <ul>
+            <li>Centralized ~80% automated ABM cleaning &amp; enrichment</li>
+            <li>Reduced manual work for CC, ListGen, Call Center &amp; LV teams</li>
+            <li>Fewer errors and excessive contact processing</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <h3>Implementation Plan</h3>
+          <ol>
+            <li>Build automated ABM &amp; SUP cleaning tool</li>
+            <li>Enrich ABM accounts with company information</li>
+            <li>Integrate into business workflow across departments</li>
+            <li>Eliminate work duplication through process changes</li>
+          </ol>
+        </div>
       </div>
     </div>
   </div>
