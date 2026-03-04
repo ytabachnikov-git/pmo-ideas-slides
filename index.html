@@ -44,7 +44,7 @@
   .slide {
     position: absolute; inset: 0;
     display: flex; flex-direction: column;
-    padding: 36px 56px 60px;
+    padding: clamp(24px, 3vh, 40px) clamp(40px, 5vw, 80px) clamp(40px, 5vh, 64px);
     opacity: 0; transform: translateX(60px);
     pointer-events: none;
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -52,6 +52,11 @@
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
     background: var(--bg-page);
+  }
+
+  /* Vertically center slide content, collapse spacers if content overflows */
+  .slide::before, .slide::after {
+    content: ''; flex: 1 1 0px; min-height: 0;
   }
 
   .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
@@ -169,9 +174,9 @@
   /* ── Section Labels ── */
   .section-label {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 6px 16px; border-radius: 6px;
-    font-size: 12px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1.5px; margin-bottom: 8px;
+    padding: 7px 18px; border-radius: 8px;
+    font-size: clamp(11px, 1vw, 15px); font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; margin-bottom: clamp(6px, 1vh, 12px);
   }
 
   .section-label.funnel { background: var(--primary-bg); color: var(--primary); }
@@ -244,54 +249,51 @@
 
   /* ── Detail Cards ── */
   .detail-layout {
-    display: flex; flex-direction: column; gap: 16px; flex: 1;
+    display: flex; flex-direction: column; gap: clamp(14px, 2vh, 24px);
+    width: 100%;
   }
 
   .detail-row {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; flex: 1;
-  }
-
-  .detail-row .detail-section {
-    display: flex; flex-direction: column;
+    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 2vw, 24px);
   }
 
   .detail-section {
     background: var(--bg); border: 1px solid var(--border);
-    border-radius: 14px; padding: 24px 28px;
+    border-radius: 16px; padding: clamp(18px, 2.5vh, 32px) clamp(22px, 2.5vw, 36px);
     box-shadow: var(--shadow);
   }
 
   .detail-section h3 {
-    font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px;
-    color: var(--text-muted); margin-bottom: 12px; font-weight: 700;
+    font-size: clamp(11px, 0.9vw, 14px); text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--text-muted); margin-bottom: clamp(8px, 1.2vh, 16px); font-weight: 700;
     display: flex; align-items: center; gap: 8px;
   }
 
-  .detail-section p { font-size: 17px; line-height: 1.7; color: var(--text-secondary); }
+  .detail-section p { font-size: clamp(15px, 1.5vw, 22px); line-height: 1.65; color: var(--text-secondary); }
 
   .detail-section ul, .detail-section ol {
-    margin: 0; padding-left: 22px; font-size: 17px; line-height: 1.85; color: var(--text-secondary);
+    margin: 0; padding-left: 26px; font-size: clamp(15px, 1.5vw, 22px); line-height: 1.85; color: var(--text-secondary);
   }
 
-  .detail-section ul li, .detail-section ol li { margin-bottom: 4px; }
+  .detail-section ul li, .detail-section ol li { margin-bottom: clamp(2px, 0.5vh, 6px); }
   .detail-section ul { list-style: disc; }
   .detail-section ol { list-style: decimal; }
   .detail-section li strong { color: var(--text); }
 
-  .detail-title { font-size: 34px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+  .detail-title { font-size: clamp(28px, 3.2vw, 46px); font-weight: 700; margin-bottom: clamp(6px, 1vh, 12px); color: var(--text); }
 
-  .detail-meta { display: flex; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+  .detail-meta { display: flex; gap: clamp(16px, 2vw, 32px); margin-bottom: clamp(12px, 2vh, 24px); flex-wrap: wrap; }
 
   .meta-item {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 15px; color: var(--text-muted);
+    display: flex; align-items: center; gap: 8px;
+    font-size: clamp(13px, 1.2vw, 19px); color: var(--text-muted);
   }
 
   .meta-item strong { color: var(--text); font-weight: 600; }
 
   .effort-badge {
     display: inline-flex; align-items: center;
-    padding: 5px 16px; border-radius: 8px; font-size: 15px; font-weight: 600;
+    padding: 5px 16px; border-radius: 8px; font-size: clamp(13px, 1.2vw, 19px); font-weight: 600;
   }
 
   .effort-badge.high { background: var(--danger-bg); color: var(--danger); }
